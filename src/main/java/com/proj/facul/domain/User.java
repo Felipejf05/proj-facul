@@ -1,6 +1,12 @@
 package com.proj.facul.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +18,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Entity
+@Table(name = "app_user")
 public class User {
 
     @Id
@@ -30,6 +37,6 @@ public class User {
     @NotBlank
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Book> getBooks;
 }

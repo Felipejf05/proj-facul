@@ -40,6 +40,6 @@ public class Book {
     private Boolean available;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "app_user")
     private User user;
 }
