@@ -1,8 +1,8 @@
 info:
   app:
-    name: @project.name@
-    description: @project.description@
-    version: @project.version@
+    name: Proj Facul
+    description: Demo project for Spring Boot
+    version: 0.0.1-SNAPSHOT
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
