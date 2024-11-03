@@ -14,7 +14,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-
     public User createUser(User user){
         return userRepository.save(user);
     }
@@ -40,7 +39,7 @@ public class UserService {
         try{
             userRepository.deleteById(id);
         }catch (RuntimeException e){
-            throw new RuntimeException("Id não encotrado");
+            throw new RuntimeException("Id não encontrado");
         }
 
     }
