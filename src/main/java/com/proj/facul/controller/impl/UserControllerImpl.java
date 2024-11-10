@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.format.DateTimeFormatter;
+
 @RestController
 @RequiredArgsConstructor
 public class UserControllerImpl implements UserController {
-    private final UserService userService;
 
+    private final UserService userService;
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Override
     public ResponseEntity<UserListResponse> getUsers() {
         final var users = userService.getUsers();
@@ -32,9 +35,10 @@ public class UserControllerImpl implements UserController {
 
         User user = userService.getUserById(id);
         UserResponseDTO responseDTO = new UserResponseDTO();
-        responseDTO.setId(user.getId());
         responseDTO.setName(user.getName());
-        responseDTO.setPhone(user.getPhone());
+        responseDTO.setDocument(user.getDocument());
+        responseDTO.setBirthday(user.getBirthday());
+        responseDTO.setPhone(user.getPhone().toString());
         responseDTO.setAddress(user.getAddress());
         responseDTO.setEmail(user.getEmail());
 
@@ -46,7 +50,9 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequest userRequest) {
         User user = new User();
         user.setName(userRequest.getName());
-        user.setPhone(userRequest.getPhone());
+        user.setDocument(userRequest.getDocument());
+        user.setBirthday(userRequest.getBirthday());
+        user.setPhone(Long.valueOf(userRequest.getPhone()));
         user.setAddress(userRequest.getAddress());
         user.setEmail(userRequest.getEmail());
         user.setPassword(userRequest.getPassword());
@@ -54,9 +60,10 @@ public class UserControllerImpl implements UserController {
         User savedUser = userService.createUser(user);
 
         UserResponseDTO responseDTO = new UserResponseDTO();
-        responseDTO.setId(savedUser.getId());
         responseDTO.setName(savedUser.getName());
-        responseDTO.setPhone(savedUser.getPhone());
+        responseDTO.setDocument(savedUser.getDocument());
+        responseDTO.setBirthday(savedUser.getBirthday());
+        responseDTO.setPhone(savedUser.getPhone().toString());
         responseDTO.setAddress(savedUser.getAddress());
         responseDTO.setEmail(savedUser.getEmail());
 
@@ -66,32 +73,13 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<UserResponseDTO> updateUser(Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 
-        User existingUser = userService.getUserById(id);
 
-        if (userUpdateRequest.getName() != null) {
-            existingUser.setName(userUpdateRequest.getName());
-        }
-        if(userUpdateRequest.getPhone() != null){
-            existingUser.setPhone(userUpdateRequest.getPhone());
-        }
-        if(userUpdateRequest.getAddress() != null){
-            existingUser.setAddress(userUpdateRequest.getAddress());
-        }
-        if (userUpdateRequest.getEmail() != null) {
-            existingUser.setEmail(userUpdateRequest.getEmail());
-        }
-        if (userUpdateRequest.getPassword() != null) {
-            existingUser.setPassword(userUpdateRequest.getPassword());
-        }
-        if (userUpdateRequest.getAddress() != null) {
-            existingUser.setAddress(userUpdateRequest.getAddress());
-        }
-
-        User updatedUser = userService.updateUser(id, existingUser);
+        User updatedUser = userService.updateUser(id, userUpdateRequest);
 
         UserResponseDTO responseDTO = new UserResponseDTO();
-        responseDTO.setId(updatedUser.getId());
         responseDTO.setName(updatedUser.getName());
+        responseDTO.setDocument(updatedUser.getDocument());
+        responseDTO.setBirthday(updatedUser.getBirthday());
         responseDTO.setEmail(updatedUser.getEmail());
         responseDTO.setAddress(updatedUser.getAddress());
 

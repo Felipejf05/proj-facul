@@ -8,10 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -29,15 +32,23 @@ public class User {
     @NotBlank
     private String name;
 
-    @Column
+    @Column(unique = true)
     @NotBlank
-    private String phone;
+    private String document;
 
     @Column
+    @NotBlank
+    private String birthday;
+
+    @Column(unique = true)
+    @NotNull
+    private Long phone;
+
+    @Column(unique = true)
     @NotBlank
     private String address;
 
-    @Column
+    @Column(unique = true)
     @NotBlank
     private String email;
 
@@ -48,9 +59,11 @@ public class User {
     @OneToMany
     private List<Book> getBooks;
 
-    public User(Long id, String name, String phone, String address, String email, String password) {
+    public User(Long id, String name, String document, String birthday, Long phone, String address, String email, String password) {
         this.id = id;
         this.name = name;
+        this.document = document;
+        this.birthday = birthday;
         this.phone = phone;
         this.address = address;
         this.email = email;

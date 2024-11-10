@@ -1,6 +1,7 @@
 package com.proj.facul.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,13 @@ public class UserRequest {
     @NotBlank(message = "O nome não pode estar em branco.")
     private String name;
 
-    @NotBlank(message = "O telefone não pode estar em branco.")
+    @NotBlank(message = "O documento não pode estar em branco.")
+    private String document;
+
+    @NotBlank(message = "A data de aniversário não pode estar em branco.")
+    private String birthday;
+
+    @NotNull(message = "O telefone não pode estar em branco.")
     private String phone;
 
     @NotBlank(message = "O endereço não pode estar em branco.")

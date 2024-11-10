@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Tag(name = "Teste")
+@Tag(name = "User")
 @RequestMapping("/v1")
 public interface UserController {
 
