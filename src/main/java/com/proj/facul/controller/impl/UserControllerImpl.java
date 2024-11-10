@@ -22,7 +22,6 @@ import java.time.format.DateTimeFormatter;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Override
     public ResponseEntity<UserListResponse> getUsers() {
         final var users = userService.getUsers();
