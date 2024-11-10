@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -39,11 +38,10 @@ class UserServiceTest {
     private UserService
             userService;
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     @BeforeEach
     void setUp() {
     }
+
     @Test
     public void whenCreateUserWithAllArguments() {
         Long id = 1L;
