@@ -30,12 +30,15 @@ public class Book {
     @NotBlank
     private Date publication_year;
 
+    @Column
     @NotBlank
     private String genre;
 
+    @Column
     @NotBlank
     private String description;
 
+    @Column
     @NotBlank
     private Boolean available;
 
