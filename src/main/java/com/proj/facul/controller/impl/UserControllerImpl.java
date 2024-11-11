@@ -32,6 +32,7 @@ public class UserControllerImpl implements UserController {
 
         User user = userService.getUserById(id);
         UserResponseDTO responseDTO = new UserResponseDTO();
+        responseDTO.setId(String.valueOf(user.getId()));
         responseDTO.setName(user.getName());
         responseDTO.setDocument(user.getDocument());
         responseDTO.setBirthday(user.getBirthday());
@@ -57,6 +58,7 @@ public class UserControllerImpl implements UserController {
         User savedUser = userService.createUser(user);
 
         UserResponseDTO responseDTO = new UserResponseDTO();
+        responseDTO.setId(String.valueOf(savedUser.getId()));
         responseDTO.setName(savedUser.getName());
         responseDTO.setDocument(savedUser.getDocument());
         responseDTO.setBirthday(savedUser.getBirthday());
@@ -70,12 +72,14 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<UserResponseDTO> updateUser(Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 
-
         User updatedUser = userService.updateUser(id, userUpdateRequest);
 
         UserResponseDTO responseDTO = new UserResponseDTO();
+        responseDTO.setId(String.valueOf(updatedUser.getId()));
         responseDTO.setName(updatedUser.getName());
         responseDTO.setDocument(updatedUser.getDocument());
+        responseDTO.setPhone(userUpdateRequest.getPhone());
+        responseDTO.setPhone(userUpdateRequest.getPhone());
         responseDTO.setBirthday(updatedUser.getBirthday());
         responseDTO.setEmail(updatedUser.getEmail());
         responseDTO.setAddress(updatedUser.getAddress());

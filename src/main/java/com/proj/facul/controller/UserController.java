@@ -32,7 +32,7 @@ public interface UserController {
     content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserListResponse.class)))
     ResponseEntity<UserListResponse> getUsers();
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     @Operation(summary = "Busca um usuário por ID")
     @ApiResponse(responseCode = "200", description = "Usuário encontrado",
             content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserResponseDTO.class)))
@@ -40,7 +40,7 @@ public interface UserController {
             = "404", description = "Usuário não encontrado")
     ResponseEntity<UserResponseDTO> findById(@PathVariable Long id);
 
-    @PostMapping
+    @PostMapping("/users")
     @Operation(summary = "Cria um novo usuário")
     @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso",
             content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserResponseDTO.class)))
@@ -48,7 +48,7 @@ public interface UserController {
             = "Erro de validação")
     ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequest userRequest);
 
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     @Operation(summary = "Atualiza um usuário")
     @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso",
             content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserResponseDTO.class)))
@@ -57,7 +57,7 @@ public interface UserController {
     @ApiResponse(responseCode = "400", description = "Erro de validação")
     ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     @Operation(summary = "Deleta um usuário")
     @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")

@@ -1,16 +1,19 @@
 package com.proj.facul.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Book {
 
@@ -28,18 +31,17 @@ public class Book {
 
     @Column(name = "publication_year")
     @NotBlank
-    private Date publication_year;
+    private String publicationYear;
 
+    @Column
     @NotBlank
     private String genre;
 
+    @Column
     @NotBlank
     private String description;
 
-    @NotBlank
+    @Column
+    @NotNull
     private Boolean available;
-
-    @ManyToOne
-    @JoinColumn(name = "app_user")
-    private User user;
 }

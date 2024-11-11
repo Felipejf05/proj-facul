@@ -4,17 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDTO {
+public class BookResponseDTO {
     private String id;
-    private String name;
-    private String document;
-    private String birthday;
-    private String phone;
-    private String address;
-    private String email;
+    private String title;
+    private String author;
+    private String publicationYear;
+    private String genre;
+    private String description;
+    private Boolean available;
 }
