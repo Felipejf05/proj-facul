@@ -7,8 +7,10 @@ import com.proj.facul.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    public Book createBook(Book book) {
+    public Book addBook(Book book) {
         validateDuplicates(book, null);
         return bookRepository.save(book);
     }
@@ -26,7 +28,7 @@ public class BookService {
         return book.orElseThrow(() -> new RuntimeException("Livro não encontrado"));
     }
 
-    public Book updateBook(Long id, BookUpdateRequest bookUpdateRequest) {
+    public Book updateBook(Long id, BookUpdateRequest bookUpdateRequest) throws ParseException {
         Book existingBook = getBookById(id);
 
         // Atualiza os campos do livro
@@ -37,7 +39,7 @@ public class BookService {
             existingBook.setAuthor(bookUpdateRequest.getAuthor());
         }
         if (bookUpdateRequest.getPublicationYear() != null) {
-            existingBook.setPublication_year(bookUpdateRequest.getPublicationYear());
+            existingBook.setPublicationYear(bookUpdateRequest.getPublicationYear());
         }
         if (bookUpdateRequest.getGenre() != null) {
             existingBook.setGenre(bookUpdateRequest.getGenre());
@@ -47,8 +49,8 @@ public class BookService {
         }
         if (bookUpdateRequest.getAvailable() != null) {
             existingBook.setAvailable(bookUpdateRequest.getAvailable());
-            validateDuplicates(existingBook, id);
         }
+        validateDuplicates(existingBook, id);
 
         return bookRepository.save(existingBook);
     }

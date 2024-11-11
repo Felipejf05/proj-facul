@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleDuplicateAddressException(DuplicateAddressException e){
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+    @ExceptionHandler(DuplicateBookException.class)
+    public ResponseEntity<String> handleDuplicateBookException(DuplicateBookException e){
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+
 
 
 

@@ -1,4 +1,4 @@
-package com.proj.facul.dto.request;
+package com.proj.facul.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookUpdateRequest {
+public class BookResponseDTO {
+    private String id;
     private String title;
     private String author;
     private String publicationYear;
