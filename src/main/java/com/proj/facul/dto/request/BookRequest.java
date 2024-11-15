@@ -20,7 +20,7 @@ public class BookRequest {
     @NotNull(message = "A data de publicação do livro não deve estar em branco.")
     private String publicationYear;
 
-    @NotBlank(message = "O genêro não pode ficar em branco.")
+    @NotBlank(message = "O gênero não pode ficar em branco.")
     private String genre;
 
     @NotBlank(message = "A descrição não pode ficar em branco")
