@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
+
     @Override
     public ResponseEntity<UserListResponse> getUsers() {
         final var users = userService.getUsers();
@@ -29,7 +30,6 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<UserResponseDTO> findById(Long id) {
-
         User user = userService.getUserById(id);
         UserResponseDTO responseDTO = new UserResponseDTO();
         responseDTO.setId(String.valueOf(user.getId()));
@@ -41,7 +41,6 @@ public class UserControllerImpl implements UserController {
         responseDTO.setEmail(user.getEmail());
 
         return ResponseEntity.ok(responseDTO);
-
     }
 
     @Override
@@ -71,15 +70,13 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<UserResponseDTO> updateUser(Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
-
         User updatedUser = userService.updateUser(id, userUpdateRequest);
 
         UserResponseDTO responseDTO = new UserResponseDTO();
         responseDTO.setId(String.valueOf(updatedUser.getId()));
         responseDTO.setName(updatedUser.getName());
         responseDTO.setDocument(updatedUser.getDocument());
-        responseDTO.setPhone(userUpdateRequest.getPhone());
-        responseDTO.setPhone(userUpdateRequest.getPhone());
+        responseDTO.setPhone(updatedUser.getPhone().toString());
         responseDTO.setBirthday(updatedUser.getBirthday());
         responseDTO.setEmail(updatedUser.getEmail());
         responseDTO.setAddress(updatedUser.getAddress());
@@ -89,13 +86,11 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        try{
+        try {
             userService.deleteUser(id);
             return ResponseEntity.noContent().build();
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 }

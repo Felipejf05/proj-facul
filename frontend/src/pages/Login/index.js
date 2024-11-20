@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
+import logoImage from '../../assets/fundo_livros.png';
 
 export default function Login() {
-  const [name, setName] = useState('');
+  const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -11,15 +12,13 @@ export default function Login() {
     e.preventDefault();
 
     const data = {
-      name,
+      user,
       password,
     };
 
     try {
       console.log("Login data:", data);
-      // Aqui seria ideal validar a autenticação no backend
-      // Se a autenticação for bem-sucedida:
-      navigate('/books'); // Navegar para a página de livros após login bem-sucedido
+      navigate('/books');
     } catch (err) {
       alert('Login failed! Try again!');
     }
@@ -30,14 +29,14 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container" style={{ backgroundImage: `url(${logoImage})` }}>
       <h1>Conecte-se para publicar o seu livro 📚</h1>
       <form onSubmit={handleLogin}>
         <input
           type="text"
-          placeholder="Nome de usuário"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="CPF ou E-mail"
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
         />
         <input
           type="password"

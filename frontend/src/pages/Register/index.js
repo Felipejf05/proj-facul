@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import './styles.css';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -10,10 +11,21 @@ export default function Register() {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert('As senhas não coincidem!');
+      return;
+    }
+
+    if (document.length !== 11) {
+      alert('O CPF deve conter 11 dígitos');
+      return;
+    }
 
     const data = {
       name,
@@ -26,10 +38,9 @@ export default function Register() {
     };
 
     try {
-      // Fazendo a requisição para o backend
-      const response = await api.post('/v1/users', data); // Substitua a URL com a URL da sua API
+      const response = await api.post('/v1/users', data);
       console.log("Registro bem-sucedido:", response.data);
-      navigate('/'); // Navegar para a página de login após o registro
+      navigate('/');
     } catch (err) {
       console.error('Erro ao registrar:', err);
       alert('Falha no registro! Tente novamente.');
@@ -48,13 +59,13 @@ export default function Register() {
         />
         <input
           type="email"
-          placeholder="Email"
+          placeholder="E-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="text"
-          placeholder="Documento"
+          placeholder="CPF (apenas números)"
           value={document}
           onChange={(e) => setDocument(e.target.value)}
         />
@@ -81,6 +92,12 @@ export default function Register() {
           placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Confirmar Senha"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <button className="button" type="submit">
           Registrar
