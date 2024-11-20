@@ -13,12 +13,10 @@ export default function Books() {
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
 
-
   async function logout() {
     localStorage.clear();
     navigate('/');
   }
-
 
   async function editBook(id) {
     try {
@@ -66,7 +64,7 @@ export default function Books() {
     <div className="book-container">
       <header>
         <img src={logoImage} alt="Jf" />
-        <span>Bem-vindo, <strong>{username.toUpperCase()}</strong>!</span>
+        <span>Bem-vindo, <strong>{name ? name.toUpperCase() : 'Visitante'}</strong>!</span>
         <Link className="button" to="/book/new/0">Adicionar Novo Livro</Link>
         <button onClick={logout} type="button">
           <FiPower size={18} color="#251FC5" />

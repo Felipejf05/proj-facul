@@ -17,7 +17,9 @@ export default function Login() {
 
     try {
       console.log("Login data:", data);
-      navigate('/books');
+      // Aqui seria ideal validar a autenticação no backend
+      // Se a autenticação for bem-sucedida:
+      navigate('/books'); // Navegar para a página de livros após login bem-sucedido
     } catch (err) {
       alert('Login failed! Try again!');
     }
