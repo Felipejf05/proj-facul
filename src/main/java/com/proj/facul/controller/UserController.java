@@ -22,38 +22,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "User")
-@RequestMapping("/v1")
+@RequestMapping("/v1/users")
 public interface UserController {
 
     @GetMapping("/list-users")
     @Operation(summary = "Trás a lista de usuários")
-    @ApiResponse(responseCode = "200",
-    description = "Lista de usuários gerada com sucesso",
-    content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserListResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Lista de usuários gerada com sucesso",
+            content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserListResponse.class)))
     ResponseEntity<UserListResponse> getUsers();
 
     @GetMapping("/users/{id}")
     @Operation(summary = "Busca um usuário por ID")
     @ApiResponse(responseCode = "200", description = "Usuário encontrado",
             content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserResponseDTO.class)))
-    @ApiResponse(responseCode
-            = "404", description = "Usuário não encontrado")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     ResponseEntity<UserResponseDTO> findById(@PathVariable Long id);
 
-    @PostMapping("/users")
+    @PostMapping
     @Operation(summary = "Cria um novo usuário")
     @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso",
             content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserResponseDTO.class)))
-    @ApiResponse(responseCode = "400", description
-            = "Erro de validação")
+    @ApiResponse(responseCode = "400", description = "Erro de validação")
     ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequest userRequest);
 
     @PutMapping("/users/{id}")
     @Operation(summary = "Atualiza um usuário")
     @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso",
             content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserResponseDTO.class)))
-    @ApiResponse(responseCode
-            = "404", description = "Usuário não encontrado")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     @ApiResponse(responseCode = "400", description = "Erro de validação")
     ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest);
 
@@ -61,6 +57,5 @@ public interface UserController {
     @Operation(summary = "Deleta um usuário")
     @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-
     ResponseEntity<Void> deleteUser(@PathVariable Long id);
 }

@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User createUser(User user) {
-        validateDuplicates(user, null);
+        validateDuplicates(user, null);  // Verifica duplicidade antes de criar
         return userRepository.save(user);
     }
 
@@ -30,9 +30,9 @@ public class UserService {
     }
 
     public User updateUser(Long id, UserUpdateRequest userUpdateRequest) {
-        User existingUser = getUserById(id); // Busca o usuário existente
+        User existingUser = getUserById(id);  // Busca o usuário pelo ID
 
-        // Atualiza os campos do usuário
+        // Atualiza os campos com base nas informações fornecidas
         if (userUpdateRequest.getName() != null) {
             existingUser.setName(userUpdateRequest.getName());
         }
@@ -40,27 +40,27 @@ public class UserService {
             existingUser.setBirthday(userUpdateRequest.getBirthday());
         }
         if (userUpdateRequest.getPhone() != null) {
-            existingUser.setPhone(Long.valueOf(userUpdateRequest.getPhone()));
+            existingUser.setPhone(Long.valueOf(userUpdateRequest.getPhone()));  // Atualiza o telefone
         }
         if (userUpdateRequest.getAddress() != null) {
-            existingUser.setAddress(userUpdateRequest.getAddress());
+            existingUser.setAddress(userUpdateRequest.getAddress());  // Atualiza o endereço
         }
         if (userUpdateRequest.getEmail() != null) {
-            existingUser.setEmail(userUpdateRequest.getEmail());
+            existingUser.setEmail(userUpdateRequest.getEmail());  // Atualiza o email
         }
         if (userUpdateRequest.getPassword() != null) {
-            existingUser.setPassword(userUpdateRequest.getPassword());
+            existingUser.setPassword(userUpdateRequest.getPassword());  // Atualiza a senha
         }
 
+        // Verifica se há duplicidade antes de salvar as atualizações
         validateDuplicates(existingUser, id);
 
-        return userRepository.save(existingUser);
+        return userRepository.save(existingUser);  // Salva o usuário atualizado
     }
 
     void validateDuplicates(User user, Long existingUserId) {
-
-        // Se for um novo usuário, validamos a duplicidade
-        if (existingUserId == null) {
+        // Validação de duplicidade para documentos, telefones, e-mails e endereços
+        if (existingUserId == null) {  // Se for um novo usuário
             if (userRepository.existsByDocument(user.getDocument())) {
                 throw new DuplicateDocumentException("O documento fornecido já está cadastrado.");
             }
@@ -73,8 +73,7 @@ public class UserService {
             if (userRepository.existsByAddress(user.getAddress())) {
                 throw new DuplicateAddressException("O endereço informado já está cadastrado.");
             }
-        } else {
-            // Se estamos atualizando, ignoramos o usuário atual na validação
+        } else {  // Se for uma atualização, ignoramos o usuário atual
             if (userRepository.existsByDocumentAndIdNot(user.getDocument(), existingUserId)) {
                 throw new DuplicateDocumentException("O documento fornecido já está cadastrado.");
             }
@@ -92,15 +91,13 @@ public class UserService {
 
     public void deleteUser(Long id) {
         try {
-            userRepository.deleteById(id);
+            userRepository.deleteById(id);  // Deleta o usuário
         } catch (RuntimeException e) {
-            throw new RuntimeException("Id não encontrado");
+            throw new RuntimeException("Id não encontrado");  // Lança exceção caso o usuário não seja encontrado
         }
-
     }
 
     public List<User> getUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll();  // Retorna a lista de todos os usuários
     }
-
 }
