@@ -47,7 +47,7 @@ public interface BookController {
     @ApiResponse(responseCode = "400", description = "Erro de validação")
     ResponseEntity<BookResponseDTO> addBook(@Valid @RequestBody BookRequest bookRequest) throws ParseException;
 
-    @PutMapping("/{id}")
+    @PutMapping("/books/{id}")
     @Operation(summary = "Atualiza as informações de um livro")
     @ApiResponse(responseCode = "200", description = "Livro atualizado com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = BookResponseDTO.class)))

@@ -1,92 +1,118 @@
 .book-list-container {
   padding: 20px;
-  background-color: #f4f4f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.add-book-link {
-  display: inline-block;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-.add-book-link:hover {
-  background-color: #45a049;
+  background-color: #f9f9f9;
 }
 
 .book-list-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.book-list-table th, .book-list-table td {
+.book-list-table th,
+.book-list-table td {
   padding: 10px;
-  border: 1px solid #ddd;
   text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 .book-list-table th {
-  background-color: #f4f4f4;
+  background-color: #f2f2f2;
 }
 
-.edit-button,
-.delete-button {
-  padding: 5px 10px;
-  margin-right: 10px;
-  border: none;
+button, .edit-button, .delete-button {
+  font-size: 14px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: transform 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  padding: 6px 12px;
+}
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: 50px;
 }
 
 .edit-button {
-  background-color: #007BFF;
+  background-color: #4CAF50;
   color: white;
-  border-radius: 5px;
-}
-
-.delete-button {
-  background-color: #FF5733;
-  color: white;
-  border-radius: 5px;
+  font-weight: bold;
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 11px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .edit-button:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.delete-button {
+  background-color: transparent;
+  color: black;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  transition: none;
+  outline: none;
+  background: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+}
+
+.delete-button i {
+  font-size: 20px;
 }
 
 .delete-button:hover {
-  background-color: #c13d1a;
+  color: black;
+  box-shadow: none;
+  background: none;
+}
+
+.delete-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  width: 250px;
 }
 
 .add-book-button {
   display: inline-block;
-  padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #008CBA;
   color: white;
-  text-decoration: none;
-  border-radius: 5px;
+  padding: 10px 20px;
   font-size: 16px;
+  border-radius: 4px;
+  text-decoration: none;
   margin-bottom: 20px;
 }
 
 .add-book-button:hover {
-  background-color: #45a049;
-  }
+  background-color: #007b8e;
+}
