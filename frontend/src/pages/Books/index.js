@@ -1,103 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiPower, FiEdit, FiTrash2 } from 'react-icons/fi';
-import api from '../../services/api';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './styles.css';
-import logoImage from '../../assets/logo.svg';
+import BookCard from './bookCard';
 
 export default function Books() {
   const [books, setBooks] = useState([]);
-  const [page, setPage] = useState(1);
-
-  const name = localStorage.getItem('name');
-  const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
 
-  async function logout() {
-    localStorage.clear();
-    navigate('/');
-  }
+  const apiUrl = 'http://localhost:8080/v1/list-books';
 
-  async function editBook(id) {
+  const fetchBooks = async () => {
     try {
-      navigate(`/book/new/${id}`);
+      const response = await axios.get(apiUrl);
+      console.log(response.data);
+
+      if (response.data && Array.isArray(response.data.books)) {
+        setBooks(response.data.books);
+      } else {
+        console.error('A resposta não contém livros:', response.data);
+        alert('Erro ao carregar livros!');
+      }
     } catch (error) {
-      alert('Falha ao editar o livro! Tente novamente.');
+      console.error('Erro ao buscar livros:', error);
+      alert('Erro ao carregar a lista de livros!');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  async function deleteBook(id) {
-    try {
-      await api.delete(`/api/book/v1/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+  const goToAddBook = () => {
+    navigate('/books/add');
+  };
+
+  const handleDelete = (id) => {
+    axios.delete(`/books/${id}`)
+      .then(() => {
+        setBooks(books.filter((book) => book.id !== id));
+      })
+      .catch((error) => {
+        console.error('Erro ao excluir livro', error);
       });
-
-      setBooks(books.filter(book => book.id !== id));
-    } catch (err) {
-      alert('Falha ao excluir o livro! Tente novamente.');
-    }
-  }
-
-  async function fetchMoreBooks() {
-    const response = await api.get('/api/book/v1', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        page: page,
-        limit: 4,
-        direction: 'asc',
-      },
-    });
-
-    setBooks([...books, ...response.data._embedded.bookVoes]);
-    setPage(page + 1);
-  }
-
-  useEffect(() => {
-    fetchMoreBooks();
-  }, []);
+  };
 
   return (
-    <div className="book-container">
-      <header>
-        <img src={logoImage} alt="Jf" />
-        <span>Bem-vindo, <strong>{name ? name.toUpperCase() : 'Visitante'}</strong>!</span>
-        <Link className="button" to="/book/new/0">Adicionar Novo Livro</Link>
-        <button onClick={logout} type="button">
-          <FiPower size={18} color="#251FC5" />
-        </button>
-      </header>
-
-      <h1>Livros Cadastrados</h1>
-      <ul>
-        {books.map(book => (
-          <li key={book.id}>
-            <strong>Título:</strong>
-            <p>{book.title}</p>
-            <strong>Autor:</strong>
-            <p>{book.author}</p>
-            <strong>Gênero:</strong>
-            <p>{book.genre}</p>
-            <strong>Descrição:</strong>
-            <p>{book.description}</p>
-            <strong>Disponibilidade:</strong>
-            <p>{book.available ? 'Disponível' : 'Indisponível'}</p>
-
-            <button onClick={() => editBook(book.id)} type="button">
-              <FiEdit size={20} color="#251FC5" />
-            </button>
-
-            <button onClick={() => deleteBook(book.id)} type="button">
-              <FiTrash2 size={20} color="#251FC5" />
-            </button>
-          </li>
+    <div className="books-container">
+      <h1>Lista de Livros</h1>
+      <button onClick={goToAddBook} className="add-book-button">
+        Adicionar Livro
+      </button>
+      <div className="book-list">
+        {books.map((book) => (
+          <BookCard key={book.id} book={book} onDelete={handleDelete} />
         ))}
-      </ul>
-
-      <button className="button" onClick={fetchMoreBooks} type="button">Carregar Mais</button>
+      </div>
     </div>
   );
 }
