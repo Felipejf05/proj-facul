@@ -18,7 +18,7 @@ export default function Login() {
 
     try {
       console.log("Login data:", data);
-      navigate('/books');
+      navigate('/books/add');
     } catch (err) {
       alert('Login failed! Try again!');
     }
