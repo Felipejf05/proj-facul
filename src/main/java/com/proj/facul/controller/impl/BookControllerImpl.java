@@ -19,7 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -112,17 +116,38 @@ public class BookControllerImpl implements BookController {
         }
     }
 
-
     @Override
     public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
         try {
-            byte[] fileContent = fileService.downloadFile(id);
-            return ResponseEntity.ok(fileContent);
+            Optional<Book> bookOptional = Optional.ofNullable(bookService.getBookById(id));
+            if (bookOptional.isEmpty() || bookOptional.get().getFilePath() == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            Book book = bookOptional.get();
+            Path filePath = Paths.get(book.getFilePath());
+
+            if (!Files.exists(filePath)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            byte[] fileContent = Files.readAllBytes(filePath);
+
+            String mimeType = Files.probeContentType(filePath);
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
+            }
+
+            String fileName = filePath.getFileName().toString();
+
+            return ResponseEntity.ok()
+                    .header("Content-Type", mimeType)
+                    .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"")
+                    .body(fileContent);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
     @Override
     public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
         try {

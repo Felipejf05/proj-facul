@@ -65,7 +65,7 @@ public interface BookController {
     @ApiResponse(responseCode = "404", description = "Livro não encontrado")
     ResponseEntity<Void> deleteBook(@PathVariable Long id);
 
-    @PostMapping("/books/{id}/upload")
+    @PostMapping(value = "/books/{id}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Faz o upload de um arquivo associado ao livro",
             description = "Endpoint que permite o upload de um arquivo para um livro específico.",
@@ -77,13 +77,7 @@ public interface BookController {
                             in = ParameterIn.PATH,
                             schema = @Schema(type = "integer", format = "int64")
                     )
-            },
-            requestBody = @RequestBody(
-                    content = @Content(
-                            mediaType = "multipart/form-data",
-                            schema = @Schema(type = "string", format = "binary")
-                    )
-            )
+            }
     )
     @ApiResponse(responseCode = "200", description = "Upload realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao fazer upload do arquivo")
