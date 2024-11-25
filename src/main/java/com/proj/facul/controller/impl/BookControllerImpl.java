@@ -7,14 +7,18 @@ import com.proj.facul.dto.request.BookUpdateRequest;
 import com.proj.facul.dto.response.BookListResponse;
 import com.proj.facul.dto.response.BookResponseDTO;
 import com.proj.facul.service.BookService;
+import com.proj.facul.service.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 @RestController
@@ -22,6 +26,7 @@ import java.text.ParseException;
 public class BookControllerImpl implements BookController {
 
     private final BookService bookService;
+    private final FileService fileService;
 
     @Override
     public ResponseEntity<BookListResponse>
@@ -95,6 +100,36 @@ public class BookControllerImpl implements BookController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
 
+        }
+    }
+    @Override
+    public ResponseEntity<String> uploadFile(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            String filePath = fileService.uploadFile(id, file);
+            return ResponseEntity.ok("Arquivo enviado com sucesso: " + filePath);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao fazer o upload: " + e.getMessage());
+        }
+    }
+
+
+    @Override
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
+        try {
+            byte[] fileContent = fileService.downloadFile(id);
+            return ResponseEntity.ok(fileContent);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
+        try {
+            fileService.deleteFile(id);
+            return ResponseEntity.noContent().build();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

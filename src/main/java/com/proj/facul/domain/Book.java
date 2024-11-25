@@ -44,4 +44,7 @@ public class Book {
     @Column
     @NotNull
     private Boolean available;
+
+    @Column(name = "file_path")
+    private String filePath;
 }
