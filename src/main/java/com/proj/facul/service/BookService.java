@@ -31,7 +31,6 @@ public class BookService {
     public Book updateBook(Long id, BookUpdateRequest bookUpdateRequest) throws ParseException {
         Book existingBook = getBookById(id);
 
-        // Atualiza os campos do livro
         if (bookUpdateRequest.getTitle() != null) {
             existingBook.setTitle(bookUpdateRequest.getTitle());
         }

@@ -6,13 +6,17 @@ import com.proj.facul.dto.request.BookRequest;
 import com.proj.facul.dto.request.BookUpdateRequest;
 import com.proj.facul.dto.response.BookListResponse;
 import com.proj.facul.dto.response.BookResponseDTO;
+import com.proj.facul.repository.BookRepository;
 import com.proj.facul.service.BookService;
 import com.proj.facul.service.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +35,7 @@ public class BookControllerImpl implements BookController {
 
     private final BookService bookService;
     private final FileService fileService;
+    private final BookRepository bookRepository;
 
     @Override
     public ResponseEntity<BookListResponse>
@@ -56,28 +61,43 @@ public class BookControllerImpl implements BookController {
     }
 
     @Override
-    public ResponseEntity<BookResponseDTO> addBook(@Valid @RequestBody BookRequest bookRequest) throws ParseException {
+    @PostMapping(value = "/books", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BookResponseDTO> addBook(@Valid @ModelAttribute BookRequest bookRequest) throws ParseException {
         Book book = new Book();
         book.setTitle(bookRequest.getTitle());
         book.setAuthor(bookRequest.getAuthor());
-        book.setPublicationYear((bookRequest.getPublicationYear()));
+        book.setPublicationYear(bookRequest.getPublicationYear());
         book.setGenre(bookRequest.getGenre());
         book.setDescription(bookRequest.getDescription());
         book.setAvailable(bookRequest.getAvailable());
 
-        Book saveBook = bookService.addBook(book);
+        Book savedBook = bookService.addBook(book);
+
+        MultipartFile file = bookRequest.getFile();
+
+        try {
+            String filePath = fileService.uploadFile(savedBook.getId(), file);
+
+            savedBook.setFilePath(filePath);
+
+            bookRepository.save(savedBook);
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
 
         BookResponseDTO responseDTO = new BookResponseDTO();
-        responseDTO.setId(String.valueOf(saveBook.getId()));
-        responseDTO.setTitle(saveBook.getTitle());
-        responseDTO.setAuthor(saveBook.getAuthor());
-        responseDTO.setPublicationYear(saveBook.getPublicationYear());
-        responseDTO.setGenre(saveBook.getGenre());
-        responseDTO.setDescription(saveBook.getDescription());
-        responseDTO.setAvailable(saveBook.getAvailable());
+        responseDTO.setId(String.valueOf(savedBook.getId()));
+        responseDTO.setTitle(savedBook.getTitle());
+        responseDTO.setAuthor(savedBook.getAuthor());
+        responseDTO.setPublicationYear(savedBook.getPublicationYear());
+        responseDTO.setGenre(savedBook.getGenre());
+        responseDTO.setDescription(savedBook.getDescription());
+        responseDTO.setAvailable(savedBook.getAvailable());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
+
 
     @Override
     public ResponseEntity<BookResponseDTO> updateBook(Long id, @Valid @RequestBody BookUpdateRequest bookUpdateRequest) throws ParseException {
@@ -106,6 +126,7 @@ public class BookControllerImpl implements BookController {
 
         }
     }
+
     @Override
     public ResponseEntity<String> uploadFile(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         try {
@@ -148,6 +169,7 @@ public class BookControllerImpl implements BookController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
     @Override
     public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
         try {

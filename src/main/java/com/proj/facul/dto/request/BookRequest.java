@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -28,4 +29,6 @@ public class BookRequest {
 
     @NotNull(message = "A disponibilidade não pode ficar em branco.")
     private Boolean available;
+
+    private MultipartFile file;
 }

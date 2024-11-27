@@ -41,6 +41,22 @@ export default function BookList() {
     );
   });
 
+  const handleDownload = (id) => {
+    axios.get(`http://localhost:8080/v1/books/${id}/download`, { responseType: 'blob' })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `book_${id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+      })
+      .catch((error) => {
+        console.error('Erro ao baixar o arquivo:', error);
+        alert('Erro ao baixar o arquivo!');
+      });
+  };
+
   const handleDelete = (id) => {
     axios.delete(`http://localhost:8080/v1/books/${id}`)
       .then(() => {
@@ -61,7 +77,7 @@ export default function BookList() {
     <div className="book-list-container">
       <h1>Lista de Livros</h1>
 
-      {/* Barra de pesquisa */}
+      {}
       <input
         type="text"
         placeholder="Pesquise por título ou autor..."
@@ -97,7 +113,6 @@ export default function BookList() {
                 <td>{book.genre}</td>
                 <td>{book.available ? 'Sim' : 'Não'}</td>
                 <td>
-                  {}
                   <div className="actions-container">
                     <Link to={`/books/edit/${book.id}`} className="edit-button">
                       Editar
@@ -105,6 +120,12 @@ export default function BookList() {
                     <button onClick={() => handleDelete(book.id)} className="delete-button">
                       <i className="fas fa-trash"></i>
                     </button>
+                    {}
+                    {book.filePath && (
+                      <button onClick={() => handleDownload(book.id)} className="download-button">
+                        Baixar Arquivo
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
