@@ -2,6 +2,7 @@ package com.proj.facul.controller.impl;
 
 import com.proj.facul.controller.UserController;
 import com.proj.facul.domain.User;
+import com.proj.facul.dto.request.LoginRequest;
 import com.proj.facul.dto.request.UserRequest;
 import com.proj.facul.dto.request.UserUpdateRequest;
 import com.proj.facul.dto.response.UserListResponse;
@@ -93,4 +94,35 @@ public class UserControllerImpl implements UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @Override
+    public ResponseEntity<UserResponseDTO> login(@RequestBody @Valid LoginRequest loginRequest) {
+        User user = null;
+
+        try {
+            if (loginRequest.getUser().matches("[0-9]{11}")) {
+                user = userService.findByDocument(loginRequest.getUser());
+            } else {
+                user = userService.findByEmail(loginRequest.getUser());
+            }
+
+            if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
+                UserResponseDTO responseDTO = new UserResponseDTO();
+                responseDTO.setId(String.valueOf(user.getId()));
+                responseDTO.setName(user.getName());
+                responseDTO.setDocument(user.getDocument());
+                responseDTO.setBirthday(user.getBirthday());
+                responseDTO.setPhone(user.getPhone().toString());
+                responseDTO.setAddress(user.getAddress());
+                responseDTO.setEmail(user.getEmail());
+
+                return ResponseEntity.ok(responseDTO);
+            } else {
+                throw new RuntimeException("Credenciais inválidas");
+            }
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
 }

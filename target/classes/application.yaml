@@ -2,9 +2,9 @@ server:
   port: 8080
 info:
   app:
-    name: Proj Facul
-    description: Demo project for Spring Boot
-    version: 0.0.1-SNAPSHOT
+    name: "Biblioteca de Publicação de Livros"
+    description: "Uma plataforma para autores publicarem, gerenciarem e compartilharem seus livros com leitores. Facilita o acesso a obras literárias e incentiva a criação e divulgação de novos talentos."
+    version: "1.0.0"
 spring:
   datasource:
     url: jdbc:h2:mem:testdb

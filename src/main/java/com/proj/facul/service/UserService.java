@@ -97,4 +97,22 @@ public class UserService {
     public List<User> getUsers() {
         return userRepository.findAll();
     }
+
+    public User findByDocument(String document) {
+        return userRepository.findByDocument(document)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o documento fornecido"));
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o e-mail fornecido"));
+    }
+
+    public String getUserPassword(String document) {
+        User user = findByDocument(document);
+        return user.getPassword();
+    }
 }
+
+
+

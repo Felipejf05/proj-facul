@@ -1,5 +1,6 @@
 package com.proj.facul.controller;
 
+import com.proj.facul.dto.request.LoginRequest;
 import com.proj.facul.dto.request.UserRequest;
 import com.proj.facul.dto.request.UserUpdateRequest;
 import com.proj.facul.dto.response.UserListResponse;
@@ -58,4 +59,11 @@ public interface UserController {
     @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     ResponseEntity<Void> deleteUser(@PathVariable Long id);
+
+    @PostMapping("/login")
+    @Operation(summary = "Realiza o login do usuário")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso",
+            content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserResponseDTO.class)))
+    @ApiResponse(responseCode = "400", description = "Dados inválidos ou usuário não encontrado")
+    ResponseEntity<UserResponseDTO> login(@RequestBody @Valid LoginRequest loginRequest);
 }

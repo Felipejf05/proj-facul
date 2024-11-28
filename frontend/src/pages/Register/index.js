@@ -18,12 +18,12 @@ export default function Register() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert('As senhas não coincidem!');
+      alert('Erro: As senhas não coincidem. Verifique e tente novamente.');
       return;
     }
 
     if (document.length !== 11) {
-      alert('O CPF deve conter 11 dígitos');
+      alert('Erro: O CPF deve conter exatamente 11 dígitos.');
       return;
     }
 
@@ -40,10 +40,22 @@ export default function Register() {
     try {
       const response = await api.post('/v1/users', data);
       console.log("Registro bem-sucedido:", response.data);
+      alert(`Usuário registrado com sucesso! Bem-vindo(a), ${name}!`);
       navigate('/');
     } catch (err) {
       console.error('Erro ao registrar:', err);
-      alert('Falha no registro! Tente novamente.');
+
+      if (err.response) {
+        if (err.response.status === 400) {
+          alert('Erro: Dados inválidos. Verifique as informações e tente novamente.');
+        } else if (err.response.status === 409) {
+          alert('Erro: Este e-mail ou CPF já está em uso. Tente usar outros dados.');
+        } else {
+          alert('Erro: Não foi possível registrar o usuário. Por favor, tente novamente mais tarde.');
+        }
+      } else {
+        alert('Erro: Falha ao conectar ao servidor. Verifique sua conexão com a internet.');
+      }
     }
   };
 
