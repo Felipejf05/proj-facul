@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { FaSignOutAlt } from 'react-icons/fa';
+import logoImage from '../../assets/por-do-sol.png';
 import './styles.css';
 
 export default function BookList() {
@@ -77,7 +79,6 @@ export default function BookList() {
     <div className="book-list-container">
       <h1>Lista de Livros</h1>
 
-      {}
       <input
         type="text"
         placeholder="Pesquise por título ou autor..."
@@ -87,6 +88,13 @@ export default function BookList() {
       />
 
       <Link to="/books/add" className="add-book-button">Adicionar Novo Livro</Link>
+
+      {}
+      <div className="back-to-login-container">
+        <Link to="/" className="back-to-login-button">
+          <FaSignOutAlt size={24} /> {}
+        </Link>
+      </div>
 
       <table className="book-list-table">
         <thead>
@@ -120,7 +128,6 @@ export default function BookList() {
                     <button onClick={() => handleDelete(book.id)} className="delete-button">
                       <i className="fas fa-trash"></i>
                     </button>
-                    {}
                     {book.filePath && (
                       <button onClick={() => handleDownload(book.id)} className="download-button">
                         Baixar Arquivo
