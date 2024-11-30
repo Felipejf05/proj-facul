@@ -1,34 +1,43 @@
 server:
   port: 8080
+
 info:
   app:
     name: "Biblioteca de Publicação de Livros"
     description: "Uma plataforma para autores publicarem, gerenciarem e compartilharem seus livros com leitores. Facilita o acesso a obras literárias e incentiva a criação e divulgação de novos talentos."
     version: "1.0.0"
+
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb  # Banco H2 em memória
     driver-class-name: org.h2.Driver
-    username: sa
-    password:
-    initialization-mode: always
+    username: sa  # Usuário padrão do H2
+    password:  # Senha vazia para o H2
+    initialization-mode: always  # Garante que o banco será inicializado com dados ao iniciar a aplicação
 
   h2:
     console:
-      enabled: true
-      path: /h2-console
+      enabled: true  # Habilita o console web do H2 para visualização de dados
+      path: /h2-console  # Caminho para acessar o console no navegador
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Atualiza o esquema do banco automaticamente (cria ou altera tabelas)
+    properties:
+      hibernate:
+        format_sql: true  # Formata as consultas SQL no log para facilitar leitura
 
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 10MB  # Limite para tamanho de arquivos enviados
+      max-request-size: 10MB  # Limite para o tamanho total da requisição
 
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /api-docs  # Caminho para o Swagger (documentação da API)
   swagger-ui:
-    disable-swagger-default-url: true
-    path: /swagger-ui.html
+    disable-swagger-default-url: true  # Desabilita a URL padrão do Swagger
+    path: /swagger-ui.html  # Caminho para acessar a interface do Swagger
 
 app:
-  file-storage-location: "target/uploaded_files"
+  file-storage-location: "target/uploaded_files"  # Localização para armazenamento de arquivos
